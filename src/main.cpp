@@ -28,7 +28,7 @@ void HandleSignal(int signal)
     }
 }
 
-int IndividualRun(int period, int num_mod, int run_no,
+int IndividualRun(int period, int num_mod, int run_no, indicators::DynamicProgress<indicators::BlockProgressBar> &bars
         const char *scaler_name)
 {
     // Now we can start the run
@@ -46,12 +46,13 @@ int IndividualRun(int period, int num_mod, int run_no,
             indicators::option::ShowRemainingTime{true}
     };
     bar.set_option(indicators::option::PrefixText{"Run #"+std::to_string(run_no) + ": "});
-    //bars.push_back(bar);
+    bars.push_back(bar);
     auto end_time = std::chrono::system_clock::now() + std::chrono::seconds(period);
     bool errorflag = false;
     while ( std::chrono::system_clock::now() < end_time && !end_run ){
         auto timediff = end_time - std::chrono::system_clock::now();
-        float progress = 1 -    float(std::chrono::duration_cast<std::chrono::seconds>(timediff).count())/std::chrono::seconds(period).count();
+        float progress = 1 -
+    float(std::chrono::duration_cast<std::chrono::seconds>(timediff).count())/std::chrono::seconds(period).count();
         bar.set_progress(progress*100.0);
 
         if ( !LogScalers(num_mod, scaler_name) ){
@@ -82,7 +83,7 @@ int Run(int period, int num_mod, int times, const char *scaler_name, const char 
 {
     int now = 0;
     // Setup progressbar
-    //indicators::DynamicProgress<indicators::BlockProgressBar> bars;
+    indicators::DynamicProgress<indicators::BlockProgressBar> bars;
     std::function<bool(int)> end_condition = [&times](const int now) -> bool {
         return ( times == 0 ) ? true : now < times;
     };
