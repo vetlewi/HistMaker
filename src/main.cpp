@@ -28,15 +28,13 @@ void HandleSignal(int signal)
     }
 }
 
-int IndividualRun(int period, int num_mod, int run_no, indicators::DynamicProgress<indicators::BlockProgressBar> &bars,
-        const char *scaler_name)
+int IndividualRun(int period, int num_mod, int run_no, const char *scaler_name)
 {
     // Now we can start the run
     if ( !StartXIA(period, num_mod) ){
         spdlog::error("Unable to start acquisition");
         return 13;
     }
-    std::cout << "Started new run #" << run_no << std::endl;
     indicators::BlockProgressBar bar{
             indicators::option::BarWidth{50},
             indicators::option::Start{"["},
@@ -46,7 +44,7 @@ int IndividualRun(int period, int num_mod, int run_no, indicators::DynamicProgre
             indicators::option::ShowRemainingTime{true}
     };
     bar.set_option(indicators::option::PrefixText{"Run #"+std::to_string(run_no) + ": "});
-    bars.push_back(bar);
+    //bars.push_back(bar);
     auto end_time = std::chrono::high_resolution_clock::now() + std::chrono::seconds(period);
     bool errorflag = false;
     std::chrono::duration<double, std::milli> pero = std::chrono::seconds(period);
@@ -83,12 +81,12 @@ int Run(int period, int num_mod, int times, const char *scaler_name, const char 
 {
     int now = 0;
     // Setup progressbar
-    indicators::DynamicProgress<indicators::BlockProgressBar> bars;
+    //indicators::DynamicProgress<indicators::BlockProgressBar> bars;
     std::function<bool(int)> end_condition = [&times](const int now) -> bool {
         return ( times == 0 ) ? true : now < times;
     };
     while ( end_condition(now) && !end_run ){
-        auto ret = IndividualRun(period, num_mod, now, bars, scaler_name);
+        auto ret = IndividualRun(period, num_mod, now, scaler_name);
         if ( ret != 0 )
             return ret;
         // Write histograms to file
