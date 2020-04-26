@@ -200,7 +200,7 @@ int main(int argc, char *argv[])
         close(STDERR_FILENO);
 
     }
-    int res = Run(period_int, num_mod, times, "XIA_scalers.csv", output_path.c_str());
+    int res = Run(period_int, num_mod, times, "scalers.csv", output_path.c_str());
     if ( !Exit(num_mod) ){
         return 16;
     }
