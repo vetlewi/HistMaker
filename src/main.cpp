@@ -28,8 +28,7 @@ void HandleSignal(int signal)
     }
 }
 
-int IndividualRun(int period, int num_mod,
-        indicators::DynamicProgress<indicators::BlockProgressBar> &bars, int run_no,
+int IndividualRun(int period, int num_mod, int run_no,
         const char *scaler_name)
 {
     // Now we can start the run
@@ -47,7 +46,7 @@ int IndividualRun(int period, int num_mod,
             indicators::option::ShowRemainingTime{true}
     };
     bar.set_option(indicators::option::PrefixText{"Run #"+std::to_string(run_no)});
-    bars.push_back(bar);
+    //bars.push_back(bar);
     auto end_time = std::chrono::system_clock::now() + std::chrono::seconds(period);
     bool errorflag = false;
     while ( XIAIsRunning(num_mod, errorflag) && !end_run ){
@@ -73,12 +72,12 @@ int Run(int period, int num_mod, int times, const char *scaler_name, const char 
 {
     int now = 0;
     // Setup progressbar
-    indicators::DynamicProgress<indicators::BlockProgressBar> bars;
+    //indicators::DynamicProgress<indicators::BlockProgressBar> bars;
     std::function<bool(int)> end_condition = [&times](const int now) -> bool {
         return ( times == 0 ) ? true : now < times;
     };
     while ( end_condition(now) && !end_run ){
-        auto ret = IndividualRun(period, num_mod, bars, now, scaler_name);
+        auto ret = IndividualRun(period, num_mod, now, scaler_name);
         if ( ret != 0 )
             return ret;
         // Write histograms to file
