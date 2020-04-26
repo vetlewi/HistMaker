@@ -61,6 +61,11 @@ int IndividualRun(int period, int num_mod, int run_no,
         std::this_thread::sleep_for(std::chrono::seconds(1)); // Max check rate is 1 second.
     }
 
+    // XIA should be done by now...
+    if ( !StopXIA(num_mod) ){
+        return 20;
+    }
+
     while ( XIAIsRunning(num_mod, errorflag) ){
         if ( errorflag ){
             return 14;

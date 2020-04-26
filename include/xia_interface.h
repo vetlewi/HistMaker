@@ -13,6 +13,7 @@ extern bool EnableHistMode(int num_modules);
 extern bool XIAIsRunning(int num_mod, bool &errorflag);
 extern bool LogScalers(int num_mod, const char *file);
 extern bool StartXIA(int preset_time /*!< Preset time in seconds */, int num_mod);
+extern bool StopXIA(int num_mod);
 extern bool WriteHistogram(int num_mod, int now, const char *path);
 extern bool Exit(int num_mod);
 

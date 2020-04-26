@@ -351,7 +351,7 @@ bool WriteHistogram(int num_mod, int now, const char *path)
     return true;
 }
 
-bool Exit(int num_mod)
+bool StopXIA(int num_mod)
 {
     for ( int module = 0 ; module < num_mod ; ++module ){
         auto retval = Pixie16EndRun(module);
@@ -361,6 +361,12 @@ bool Exit(int num_mod)
             return false;
         }
     }
+    return true;
+}
+
+bool Exit(int num_mod)
+{
+    StopXIA(num_mod);
     auto retval = Pixie16ExitSystem(num_mod);
     if ( retval < 0 ){
         spdlog::error("*ERROR* Pixie16ExitSystem failed, retval = "+std::to_string(retval));
