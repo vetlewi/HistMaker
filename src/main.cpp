@@ -88,7 +88,7 @@ int Run(int period, int num_mod, int times, const char *scaler_name, const char 
         return ( times == 0 ) ? true : now < times;
     };
     while ( end_condition(now) && !end_run ){
-        auto ret = IndividualRun(period, num_mod, now, scaler_name);
+        auto ret = IndividualRun(period, num_mod, now, bars, scaler_name);
         if ( ret != 0 )
             return ret;
         // Write histograms to file
