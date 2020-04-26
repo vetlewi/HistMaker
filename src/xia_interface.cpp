@@ -4,7 +4,8 @@
 
 #include "xia_interface.h"
 
-#include <xia/pixie16app_export.h>
+//#include <xia/pixie16app_export.h>
+#include <pixie16app_export.h>
 
 #include <iostream>
 #include <chrono>
