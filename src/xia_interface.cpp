@@ -96,8 +96,12 @@ bool BootXIA(firmware_map &map, const char *dsp_settings_file, const unsigned sh
     unsigned short rev[PRESET_MAX_MODULES], bit[PRESET_MAX_MODULES], MHz[PRESET_MAX_MODULES];
     unsigned int sn[PRESET_MAX_MODULES];
 
+    unsigned short plx_map[PRESET_MAX_MODULES];
+    for ( int i = 0 ; i < num_mod ; ++i ){
+        plx_map[i] = i + 2;
+    }
 
-    int retval = Pixie16InitSystem(num_mod, plxMap, 0);
+    int retval = Pixie16InitSystem(num_mod, plx_map, 0);
 
     if ( retval < 0 ){
         spdlog::error("*ERROR* Pixie16InitSystem failed, retval = " + std::to_string(retval));
