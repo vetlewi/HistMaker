@@ -311,6 +311,9 @@ bool LogScalers(int num_mod, const char *file)
 
             ICR[i][j] = (liveTime !=0) ? fastPeak/liveTime : 0;
             OCR[i][j] = (runTime != 0) ? ChanEvents/runTime : 0;
+
+            if ( liveTime == 0 ) // Nothing to dump...
+                return true;
         }
 
         for (int j = 0 ; j < 448 ; ++j){
