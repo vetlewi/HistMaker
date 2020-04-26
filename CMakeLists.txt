@@ -21,6 +21,6 @@ target_include_directories(HistMaker
         /opt/xia/current/sys)
 
 
-target_link_libraries(HistMaker PRIVATE OCLDAQ::xia spdlog::spdlog indicators::indicators)
+target_link_libraries(HistMaker PRIVATE spdlog::spdlog indicators::indicators)
 set_target_properties(HistMaker PROPERTIES CXX_STANDARD 11)
 target_link_options(HistMaker PRIVATE -ldl -lrt)
