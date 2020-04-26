@@ -45,18 +45,14 @@ int IndividualRun(int period, int num_mod, int run_no,
             indicators::option::ShowElapsedTime{true},
             indicators::option::ShowRemainingTime{true}
     };
-    bar.set_option(indicators::option::PrefixText{"Run #"+std::to_string(run_no)});
+    bar.set_option(indicators::option::PrefixText{"Run #"+std::to_string(run_no) + ": "});
     //bars.push_back(bar);
     auto end_time = std::chrono::system_clock::now() + std::chrono::seconds(period);
     bool errorflag = false;
-    std::cout << "Update..." << std::endl;
     while ( XIAIsRunning(num_mod, errorflag) && !end_run ){
-        std::cout << "Update..." << std::endl;
         auto timediff = end_time - std::chrono::system_clock::now();
-        std::cout << "Update..." << std::endl;
         float progress = std::chrono::duration_cast<std::chrono::seconds>(timediff).count()/std::chrono::seconds(period).count();
         bar.set_progress(progress*100.0);
-        std::cout << "Update..." << std::endl;
         if ( errorflag ){
             return 14;
         }
@@ -85,6 +81,9 @@ int Run(int period, int num_mod, int times, const char *scaler_name, const char 
         if ( ret != 0 )
             return ret;
         // Write histograms to file
+        ret = WriteHistogram(num_mod, now, hist_path);
+        if ( ret != 0 )
+            return ret;
     }
     return 0;
 }
