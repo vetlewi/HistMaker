@@ -23,4 +23,4 @@ target_include_directories(HistMaker
 
 target_link_libraries(HistMaker PRIVATE spdlog::spdlog indicators::indicators)
 set_target_properties(HistMaker PROPERTIES CXX_STANDARD 11)
-target_link_options(HistMaker PRIVATE -ldl -lrt)
+target_link_options(HistMaker PRIVATE -ldl -lrt -L/opt/xia/current -lPixie16Sys -lPixie16App)
