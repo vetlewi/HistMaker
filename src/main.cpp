@@ -91,7 +91,7 @@ int Run(int period, int num_mod, int times, const char *scaler_name, const char 
         if ( ret != 0 )
             return ret;
         // Write histograms to file
-        ret = WriteHistogram(num_mod, now, hist_path);
+        ret = WriteHistogram(num_mod, now++, hist_path);
         if ( ret != 1 )
             return ret;
     }
