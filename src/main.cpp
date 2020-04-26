@@ -49,10 +49,10 @@ int IndividualRun(int period, int num_mod, int run_no, indicators::DynamicProgre
     bars.push_back(bar);
     auto end_time = std::chrono::high_resolution_clock::now() + std::chrono::seconds(period);
     bool errorflag = false;
+    std::chrono::duration<double, std::milli> pero = std::chrono::seconds(period);
     while (  std::chrono::high_resolution_clock::now() < end_time && !end_run ){
-        auto timediff = end_time -  std::chrono::high_resolution_clock::now();
-        float progress = 1 -
-    float(std::chrono::duration_cast<std::chrono::seconds>(timediff).count())/std::chrono::seconds(period).count();
+        std::chrono::duration<double, std::milli> timediff = end_time - std::chrono::high_resolution_clock::now();
+        float progress = (pero - timediff).count();
         bar.set_progress(progress*100.0);
 
         if ( !LogScalers(num_mod, scaler_name) ){
