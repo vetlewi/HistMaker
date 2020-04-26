@@ -47,16 +47,18 @@ int IndividualRun(int period, int num_mod, int run_no, const char *scaler_name)
     //bars.push_back(bar);
     auto end_time = std::chrono::high_resolution_clock::now() + std::chrono::seconds(period);
     bool errorflag = false;
+    auto last_readout = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> pero = std::chrono::seconds(period);
-    while (  std::chrono::high_resolution_clock::now() < end_time && !end_run ){
+    while (  std::chrono::high_resolution_clock::now() < end_time && !end_run ) {
         std::chrono::duration<double, std::milli> timediff = end_time - std::chrono::high_resolution_clock::now();
-        float progress = (1 - timediff/pero);
-        bar.set_progress(progress*100.0);
+        float progress = (1 - timediff / pero);
+        bar.set_progress(progress * 100.0);
 
-            if ( !LogScalers(num_mod, scaler_name) ){
+        if (std::chrono::high_resolution_clock::now() - last_readout > std::chrono::seconds(1)){
+            if (!LogScalers(num_mod, scaler_name)) { // Limit readout rate
                 return 15;
             }
-
+        }
         std::this_thread::sleep_for(std::chrono::milliseconds(250)); // Max check rate is 1 second.
     }
 
