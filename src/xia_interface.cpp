@@ -135,6 +135,7 @@ bool BootXIA(firmware_map &map, const char *dsp_settings_file, const unsigned sh
         std::cout << "SPFPGAConfigFile: " << SPFPGA << std::endl;
         std::cout << "DSPCodeFile: " << DSPCode << std::endl;
         std::cout << "DSPVarFile: " << DSPVar << std::endl;
+        std::cout << "DSPParFile: " << DSPSet << std::endl;
 
         retval = Pixie16BootModule(ComFPGA, SPFPGA, TrigFPGA, DSPCode, DSPSet, DSPVar, i, 0x7F);
         if ( retval < 0 ){
