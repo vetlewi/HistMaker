@@ -46,6 +46,7 @@ int IndividualRun(int period, int num_mod, int run_no, const char *scaler_name)
     bar.set_option(indicators::option::PrefixText{"Run #"+std::to_string(run_no) + ": "});
     //bars.push_back(bar);
     auto end_time = std::chrono::high_resolution_clock::now() + std::chrono::seconds(period);
+    auto last_scaler_dump = std::chrono::high_resolution_clock::now();
     bool errorflag = false;
     std::chrono::duration<double, std::milli> pero = std::chrono::seconds(period);
     while (  std::chrono::high_resolution_clock::now() < end_time && !end_run ){
@@ -53,8 +54,10 @@ int IndividualRun(int period, int num_mod, int run_no, const char *scaler_name)
         float progress = (1 - timediff/pero);
         bar.set_progress(progress*100.0);
 
-        if ( !LogScalers(num_mod, scaler_name) ){
-            return 15;
+        if ( std::chrono::high_resolution_clock::now() - last_scaler_dump > std::chrono::seconds(2) ){
+            if ( !LogScalers(num_mod, scaler_name) ){
+                return 15;
+            }
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(250)); // Max check rate is 1 second.
