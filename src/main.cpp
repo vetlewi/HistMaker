@@ -37,6 +37,7 @@ int IndividualRun(int period, int num_mod,
         spdlog::error("Uable to start acquisition");
         return 13;
     }
+    std::cout << "Started new run #" << run_no << std::endl;
     indicators::BlockProgressBar bar{
             indicators::option::BarWidth{50},
             indicators::option::Start{"["},
@@ -79,7 +80,6 @@ int Run(int period, int num_mod, int times, const char *scaler_name, const char 
     int now = 0;
     // Setup progressbar
     indicators::DynamicProgress<indicators::BlockProgressBar> bars;
-
     std::function<bool(int)> end_condition = [&times](const int now) -> bool {
         return ( times == 0 ) ? true : now < times;
     };
