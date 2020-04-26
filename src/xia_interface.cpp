@@ -166,10 +166,10 @@ bool EnableHistMode(int num_modules)
     unsigned long CSR;
     double value;
     for ( int module = 0 ; module < num_modules ; ++module ){
-        for ( int channel = 0 ; channel < NUMBER_OF_CHANNELS ; ++channel ){
+        for ( int channel = 0 ; channel < NUMBER_OF_CHANNELS ; ++channel ) {
             // Read CSR
             retval = Pixie16ReadSglChanPar("CHANNEL_CSRA", &value, module, channel);
-            if ( retval  < 0 ){
+            if (retval < 0) {
                 spdlog::error("*ERROR* Pixie16ReadSglChanPar failed retval = " + std::to_string(retval));
                 std::cerr << "*ERROR* Pixie16ReadSglChanPar failed retval = " << retval << std::endl;
                 return false;
@@ -180,26 +180,24 @@ bool EnableHistMode(int num_modules)
 
             // Write CSR
             retval = Pixie16WriteSglChanPar("CHANNEL_CSRA", CSR, module, channel);
-            if ( retval < 0 ){
+            if (retval < 0) {
                 spdlog::error("*ERROR* Pixie16WriteSglChanPar failed, retval = " + std::to_string(retval));
                 std::cerr << "*ERROR* Pixie16WriteSglChanPar failed, retval = " << retval << std::endl;
                 return false;
             }
-            // Write IN_SYNCH
-            retval = Pixie16WriteSglChanPar("IN_SYNCH", 1, module, channel);
-            if ( retval < 0 ){
-                spdlog::error("*ERROR* Pixie16WriteSglChanPar failed, retval = " + std::to_string(retval));
-                std::cerr << "*ERROR* Pixie16WriteSglChanPar failed, retval = " << retval << std::endl;
-                return false;
-            }
-            retval = Pixie16WriteSglChanPar("SYNCH_WAIT", 1, module, channel);
-            if ( retval < 0 ){
-                spdlog::error("*ERROR* Pixie16WriteSglChanPar failed, retval = " + std::to_string(retval));
-                std::cerr << "*ERROR* Pixie16WriteSglChanPar failed, retval = " << retval << std::endl;
-                return false;
-            }
-
-
+        }
+        // Write IN_SYNCH
+        retval = Pixie16WriteSglModPar("IN_SYNCH", 1, module);
+        if ( retval < 0 ){
+            spdlog::error("*ERROR* Pixie16WriteSglChanPar 'IN_SYNCH' failed, retval = " + std::to_string(retval));
+            std::cerr << "*ERROR* Pixie16WriteSglChanPar 'IN_SYNCH' failed, retval = " << retval << std::endl;
+            return false;
+        }
+        retval = Pixie16WriteSglModPar("SYNCH_WAIT", 1, module);
+        if ( retval < 0 ){
+            spdlog::error("*ERROR* Pixie16WriteSglChanPar 'SYNCH_WAIT' failed, retval = " + std::to_string(retval));
+            std::cerr << "*ERROR* Pixie16WriteSglChanPar 'SYNCH_WAIT' failed, retval = " << retval << std::endl;
+            return false;
         }
     }
     return true;
