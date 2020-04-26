@@ -234,6 +234,7 @@ bool XIAIsRunning(int num_mod, bool &errorflag){
     bool running = false;
     std::cout << "Check if running" << std::endl;
     for ( int module = 0 ; module < num_mod ; ++num_mod ) {
+        std::cout << "Check if running module#" << module << std::endl;
         auto retval = Pixie16CheckRunStatus(module);
         if ( retval == -1 ){
             spdlog::error("*ERROR* Pixie16CheckRunStatus failed, retval = " + std::to_string(retval));
