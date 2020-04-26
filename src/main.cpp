@@ -51,7 +51,7 @@ int IndividualRun(int period, int num_mod, int run_no,
     bool errorflag = false;
     while ( std::chrono::system_clock::now() < end_time && !end_run ){
         auto timediff = end_time - std::chrono::system_clock::now();
-        float progress = std::chrono::duration_cast<std::chrono::seconds>(timediff).count()/std::chrono::seconds(period).count();
+        float progress = float(std::chrono::duration_cast<std::chrono::seconds>(timediff).count())/std::chrono::seconds(period).count();
         bar.set_progress(progress*100.0);
 
         if ( !LogScalers(num_mod, scaler_name) ){
