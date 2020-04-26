@@ -54,7 +54,7 @@ int IndividualRun(int period, int num_mod, int run_no, const char *scaler_name)
         float progress = (1 - timediff/pero);
         bar.set_progress(progress*100.0);
 
-        if ( std::chrono::high_resolution_clock::now() - last_scaler_dump > std::chrono::seconds(2) ){
+        if ( std::chrono::high_resolution_clock::now() - last_scaler_dump > std::chrono::seconds(1) ){
             if ( !LogScalers(num_mod, scaler_name) ){
                 return 15;
             }
