@@ -66,8 +66,8 @@ int IndividualRun(int period, int num_mod,
         if ( !LogScalers(num_mod, scaler_name) ){
             return 15;
         }
-        std::this_thread::sleep_for(std::chrono::seconds(1)); // Max check rate is 1 second.
 
+        std::this_thread::sleep_for(std::chrono::seconds(1)); // Max check rate is 1 second.
     }
     bar.set_progress(100.0);
     bar.mark_as_completed();
@@ -189,6 +189,9 @@ int main(int argc, char *argv[])
         close(STDERR_FILENO);
 
     }*/
-
-    return Run(period_int, num_mod, times, "XIA_scalers.csv", output_path.c_str());
+    int res = Run(period_int, num_mod, times, "XIA_scalers.csv", output_path.c_str());
+    if ( !Exit(num_mod) ){
+        return 16;
+    }
+    return res;
 }

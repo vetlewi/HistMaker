@@ -339,3 +339,22 @@ bool WriteHistogram(int num_mod, int now, const char *path)
     }
     return true;
 }
+
+bool Exit(int num_mod)
+{
+    for ( int module = 0 ; module < num_mod ; ++module ){
+        auto retval = Pixie16EndRun(module);
+        if ( retval < 0 ){
+            spdlog::error("*ERROR* Pixie16SaveHistogramToFile failed, retval = "+std::to_string(retval));
+            std::cerr << "*ERROR* Pixie16SaveHistogramToFile failed, retval = " + std::to_string(retval) << std::endl;
+            return false;
+        }
+    }
+    auto retval = Pixie16ExitSystem(num_mod);
+    if ( retval < 0 ){
+        spdlog::error("*ERROR* Pixie16ExitSystem failed, retval = "+std::to_string(retval));
+        std::cerr << "*ERROR* Pixie16ExitSystem failed, retval = " + std::to_string(retval) << std::endl;
+        return false;
+    }
+    return true;
+}
