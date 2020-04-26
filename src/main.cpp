@@ -70,7 +70,7 @@ int IndividualRun(int period, int num_mod, int run_no,
         if ( errorflag ){
             return 14;
         }
-        std::this_thread::sleep_for(std::chrono::seconds(1)); // Max check rate is 1 second.
+        std::this_thread::sleep_for(std::chrono::milliseconds (1)); // Max check rate is 1 second.
     }
 
     bar.set_progress(100.0);
