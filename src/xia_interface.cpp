@@ -341,7 +341,7 @@ bool WriteHistogram(int num_mod, int now, const char *path)
                 + "/run" + std::to_string(now) + "_mod" + std::to_string(module) + ".bin";
         char *tmp = new char[filename.size()+1];
         sprintf(tmp, "%s", filename.c_str());
-        auto retval = Pixie16SaveHistogramToFile(tmp, num_mod);
+        auto retval = Pixie16SaveHistogramToFile(tmp, module);
         if ( retval < 0 ){
             spdlog::error("*ERROR* Pixie16SaveHistogramToFile failed, retval = " + std::to_string(retval));
             std::cerr << "*ERROR* Pixie16SaveHistogramToFile failed, retval = " << std::to_string(retval) << std::endl;

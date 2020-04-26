@@ -33,7 +33,7 @@ int IndividualRun(int period, int num_mod, int run_no,
 {
     // Now we can start the run
     if ( !StartXIA(period, num_mod) ){
-        spdlog::error("Uable to start acquisition");
+        spdlog::error("Unable to start acquisition");
         return 13;
     }
     std::cout << "Started new run #" << run_no << std::endl;
