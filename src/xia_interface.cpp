@@ -185,6 +185,21 @@ bool EnableHistMode(int num_modules)
                 std::cerr << "*ERROR* Pixie16WriteSglChanPar failed, retval = " << retval << std::endl;
                 return false;
             }
+            // Write IN_SYNCH
+            retval = Pixie16WriteSglChanPar("IN_SYNCH", 1, module, channel);
+            if ( retval < 0 ){
+                spdlog::error("*ERROR* Pixie16WriteSglChanPar failed, retval = " + std::to_string(retval));
+                std::cerr << "*ERROR* Pixie16WriteSglChanPar failed, retval = " << retval << std::endl;
+                return false;
+            }
+            retval = Pixie16WriteSglChanPar("SYNCH_WAIT", 1, module, channel);
+            if ( retval < 0 ){
+                spdlog::error("*ERROR* Pixie16WriteSglChanPar failed, retval = " + std::to_string(retval));
+                std::cerr << "*ERROR* Pixie16WriteSglChanPar failed, retval = " << retval << std::endl;
+                return false;
+            }
+
+
         }
     }
     return true;
