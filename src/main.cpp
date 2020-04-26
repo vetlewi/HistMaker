@@ -51,7 +51,7 @@ int IndividualRun(int period, int num_mod, int run_no,
     bool errorflag = false;
     while ( std::chrono::system_clock::now() < end_time && !end_run ){
         auto timediff = end_time - std::chrono::system_clock::now();
-        float progress = 1 - float(std::chrono::duration_cast<std::chrono::seconds>(timediff).count())/std::chrono::seconds(period).count();
+        float progress = 1 -    float(std::chrono::duration_cast<std::chrono::seconds>(timediff).count())/std::chrono::seconds(period).count();
         bar.set_progress(progress*100.0);
 
         if ( !LogScalers(num_mod, scaler_name) ){
@@ -92,6 +92,7 @@ int Run(int period, int num_mod, int times, const char *scaler_name, const char 
             return ret;
         // Write histograms to file
         ret = WriteHistogram(num_mod, now, hist_path);
+        std::cout << ret << std::endl;
         if ( ret != 0 )
             return ret;
     }
