@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(HistMaker)
 
+set(${CMAKE_VERBOSE_MAKEFILE})
+
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/xia)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/spdlog)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/indicators)
@@ -17,3 +19,4 @@ target_include_directories(HistMaker
 
 target_link_libraries(HistMaker PRIVATE OCLDAQ::xia spdlog::spdlog indicators::indicators)
 set_target_properties(HistMaker PROPERTIES CXX_STANDARD 11)
+target_link_options(HistMaker PRIVATE -ldl -lrt)
