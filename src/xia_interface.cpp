@@ -26,7 +26,7 @@
 static unsigned int last_stat[PRESET_MAX_MODULES][448];
 static int timestamp_factor[PRESET_MAX_MODULES];
 
-static time_t last = std::time();
+static time_t last = std::time(nullptr);
 
 bool GetFirmwareFile(firmware_map &fmap,
         const unsigned short &revision, const unsigned short &ADCbits, const unsigned short &ADCMSPS,
@@ -250,9 +250,9 @@ bool XIAIsRunning(int num_mod, bool &errorflag){
 
 bool LogScalers(int num_mod, const char *file)
 {
-    if ( std::time_t() - last < 5 )
+    if ( std::time_t(nullptr) - last < 5 )
         return true;
-    last = std::time_t();
+    last = std::time_t(nullptr);
 
     double ICR[PRESET_MAX_MODULES][16], OCR[PRESET_MAX_MODULES][16];
     unsigned int stats[448];
