@@ -49,13 +49,10 @@ int IndividualRun(int period, int num_mod, int run_no,
     //bars.push_back(bar);
     auto end_time = std::chrono::system_clock::now() + std::chrono::seconds(period);
     bool errorflag = false;
-    while ( XIAIsRunning(num_mod, errorflag) && !end_run ){
+    while ( std::chrono::system_clock::now() < end_time && !end_run ){
         auto timediff = end_time - std::chrono::system_clock::now();
         float progress = std::chrono::duration_cast<std::chrono::seconds>(timediff).count()/std::chrono::seconds(period).count();
         bar.set_progress(progress*100.0);
-        if ( errorflag ){
-            return 14;
-        }
 
         if ( !LogScalers(num_mod, scaler_name) ){
             return 15;
@@ -63,6 +60,14 @@ int IndividualRun(int period, int num_mod, int run_no,
 
         std::this_thread::sleep_for(std::chrono::seconds(1)); // Max check rate is 1 second.
     }
+
+    while ( XIAIsRunning(num_mod, errorflag) ){
+        if ( errorflag ){
+            return 14;
+        }
+        std::this_thread::sleep_for(std::chrono::seconds(1)); // Max check rate is 1 second.
+    }
+
     bar.set_progress(100.0);
     bar.mark_as_completed();
     return 0;
