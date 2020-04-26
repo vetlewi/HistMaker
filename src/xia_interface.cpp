@@ -179,7 +179,7 @@ bool EnableHistMode(int num_modules)
             APP32_SetBit(CCSRA_HISTOE, CSR);
 
             // Write CSR
-            retval = Pixie16WriteSglChanPar("CHANCSRA", CSR, module, channel);
+            retval = Pixie16WriteSglChanPar("CHANNEL_CSRA", CSR, module, channel);
             if ( retval < 0 ){
                 spdlog::error("*ERROR* Pixie16WriteSglChanPar failed, retval = " + std::to_string(retval));
                 std::cerr << "*ERROR* Pixie16WriteSglChanPar failed, retval = " << retval << std::endl;
