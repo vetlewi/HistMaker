@@ -168,7 +168,7 @@ bool EnableHistMode(int num_modules)
     for ( int module = 0 ; module < num_modules ; ++module ){
         for ( int channel = 0 ; channel < NUMBER_OF_CHANNELS ; ++channel ){
             // Read CSR
-            retval = Pixie16ReadSglChanPar("CHANCSRA", &value, module, channel);
+            retval = Pixie16ReadSglChanPar("CHANNEL_CSRA", &value, module, channel);
             if ( retval  < 0 ){
                 spdlog::error("*ERROR* Pixie16ReadSglChanPar failed retval = " + std::to_string(retval));
                 std::cerr << "*ERROR* Pixie16ReadSglChanPar failed retval = " << retval << std::endl;
