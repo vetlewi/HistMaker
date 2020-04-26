@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.10)
 project(HistMaker)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/xia)
