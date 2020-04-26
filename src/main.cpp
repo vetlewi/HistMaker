@@ -53,6 +53,7 @@ int IndividualRun(int period, int num_mod, int run_no,
         auto timediff = end_time - std::chrono::system_clock::now();
         float progress = std::chrono::duration_cast<std::chrono::seconds>(timediff).count()/std::chrono::seconds(period).count();
         bar.set_progress(progress*100.0);
+        std::cout << "Update..." << std::endl;
         if ( errorflag ){
             return 14;
         }
