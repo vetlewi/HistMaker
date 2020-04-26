@@ -190,5 +190,5 @@ int main(int argc, char *argv[])
 
     }
 
-    return Run(period_int, num_mod, times, "/tmp/XIA_scalers.csv", output_path.c_str());
+    return Run(period_int, num_mod, times, "XIA_scalers.csv", output_path.c_str());
 }
