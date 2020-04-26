@@ -153,12 +153,18 @@ int main(int argc, char *argv[])
     // Boot the modules
     if ( !BootXIA(fmap, config_file.c_str(), num_mod, plxMap.data()) ){
         spdlog::error("Unable to boot modules");
+        if ( !Exit(num_mod) ){
+            return 16;
+        }
         return 12;
     }
 
     // Next we will ensure that all channels have the histogram bit set
     if ( !EnableHistMode(num_mod) ){
         spdlog::error("Unable to enable histogramming");
+        if ( !Exit(num_mod) ){
+            return 16;
+        }
         return 13;
     }
 
