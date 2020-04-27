@@ -339,11 +339,16 @@ bool LogScalers(int num_mod, const char *file)
     return true;
 }
 
-bool WriteHistogram(int num_mod, int now, const char *path)
+bool WriteHistogram(int num_mod, const char *path)
 {
+
+    char buf[1024];
+    time_t now = time(NULL);
+    strftime(buf, sizeof(buf), "%Y%m%d-%H%M%S.bin",  localtime(&now));
+
     for ( int module = 0 ; module < num_mod ; ++module ){
         std::string filename = std::string(path)
-                + "/run" + std::to_string(now) + "_mod" + std::to_string(module) + ".bin";
+                + "/mod" + std::to_string(module) + "_" + std::string(buf);
         char *tmp = new char[filename.size()+1];
         sprintf(tmp, "%s", filename.c_str());
         auto retval = Pixie16SaveHistogramToFile(tmp, module);
