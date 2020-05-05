@@ -118,11 +118,15 @@ void ScalerTransmitter::ProcessScalers(const scaler_t &scalers)
 
             auto time = std::chrono::nanoseconds(runTimeN);
 
+            char mod_str[16], chn_str[16];
+            sprintf(mod_str, "%02d", module);
+            sprintf(chn_str, "%02d", channel);
+
             db->write(influxdb::Point{"count_rate"}
             .addField("ICR", ICR)
             .addField("OCR", OCR)
-            .addTag("module", std::to_string(module))
-            .addTag("channel", std::to_string(channel))
+            .addTag("module", mod_str)
+            .addTag("channel", chn_str)
             .setTimestamp(start_time + std::chrono::duration_cast<std::chrono::milliseconds>(time)));
         }
         pre_scalers[module] = scalers[module];
