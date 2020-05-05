@@ -65,6 +65,7 @@ target_include_directories(plx
     PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/plx>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src/plx
         ${CMAKE_CURRENT_SOURCE_DIR}/include/plx
@@ -90,6 +91,7 @@ target_include_directories(xia
     PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/xia>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src/xia
         ${CMAKE_CURRENT_SOURCE_DIR}/include/xia

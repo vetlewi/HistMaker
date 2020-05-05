@@ -1,16 +1,24 @@
 cmake_minimum_required(VERSION 3.10)
 project(HistMaker)
 
-set(${CMAKE_VERBOSE_MAKEFILE})
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-#add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/xia)
+if ( APPLE )
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/xia)
+else()
+    find_package(plx REQUIRED)
+    find_package(xia REQUIRED)
+endif( APPLE )
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/spdlog)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/indicators)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/influxdb-cxx)
+
 
 add_executable(HistMaker
         src/main.cpp
         src/ConfigReader.cpp
-        src/xia_interface.cpp)
+        src/xia_interface.cpp
+        src/ScalerTransmitter.cpp)
 
 target_include_directories(HistMaker
         PRIVATE
@@ -21,6 +29,13 @@ target_include_directories(HistMaker
         /opt/xia/current/sys)
 
 
-target_link_libraries(HistMaker PRIVATE spdlog::spdlog indicators::indicators)
-set_target_properties(HistMaker PROPERTIES CXX_STANDARD 11)
-target_link_options(HistMaker PRIVATE -ldl -L/opt/xia/current -lPixie16App -lPixie16Sys -L/opt/plx/current/PlxSdk/PlxApi/Library -lPlxApi -ldl)
+target_link_libraries(HistMaker PRIVATE spdlog::spdlog indicators::indicators InfluxDB)
+if ( APPLE )
+    target_link_libraries(HistMaker PRIVATE
+            OCLDAQ::plx OCLDAQ::xia spdlog::spdlog indicators::indicators InfluxDB)
+else()
+    target_link_libraries(HistMaker PRIVATE
+            plx:libplx xia::libpixie spdlog::spdlog indicators::indicators InfluxDB)
+endif()
+target_compile_features(HistMaker PRIVATE cxx_std_17)
+set_target_properties(HistMaker PROPERTIES CXX_STANDARD 17)

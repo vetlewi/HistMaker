@@ -3,9 +3,14 @@
 //
 
 #include "xia_interface.h"
+#include "ScalerTransmitter.h"
 
 //#include <xia/pixie16app_export.h>
+#if __linux__
+#include <app/pixie16app_export.h>
+#else
 #include <pixie16app_export.h>
+#endif // __linux__
 
 #include <iostream>
 #include <chrono>
@@ -229,6 +234,10 @@ bool StartXIA(int preset_time, int num_modules)
         std::cerr << "*ERROR* Pixie16StartHistogramRun failed, retval = " << retval << std::endl;
         return false;
     }
+
+    if ( ScalerTransmitter::Get() )
+        ScalerTransmitter::Get()->Start();
+
     return true;
 }
 
@@ -250,16 +259,22 @@ bool XIAIsRunning(int num_mod, bool &errorflag){
 bool LogScalers(int num_mod, const char *file)
 {
     double ICR[PRESET_MAX_MODULES][16], OCR[PRESET_MAX_MODULES][16];
-    unsigned int stats[448];
+    //unsigned int stats[448];
+    unsigned int *stats;
+    ScalerTransmitter::scaler_array_t array;
     int retval;
 
+    ScalerTransmitter::scaler_t scalers;
+
     for (int i = 0 ; i < num_mod ; ++i){
-        retval = Pixie16ReadStatisticsFromModule(stats, i);
+        retval = Pixie16ReadStatisticsFromModule(array.data(), i);
+        stats = array.data();
         if (retval < 0){
             spdlog::error("\"*ERROR* Pixie16ReadStatisticsFromModule failed, retval = ", retval);
             std::cerr << "*ERROR* Pixie16ReadStatisticsFromModule failed, retval = " << retval << std::endl;
             return false;
         }
+        scalers.push_back(array);
 
         for (int j = 0 ; j < 16 ; ++j){
 
@@ -320,6 +335,11 @@ bool LogScalers(int num_mod, const char *file)
             last_stat[i][j] = stats[j];
         }
     }
+
+    if ( ScalerTransmitter::Get() ){
+        ScalerTransmitter::Get()->PushReadout(scalers);
+    }
+
     // Get the current time
     time_t now = time(NULL);
     FILE *scaler_file = fopen(file, "w");
@@ -384,4 +404,9 @@ bool Exit(int num_mod)
         return false;
     }
     return true;
+}
+
+int *GetTS()
+{
+    return timestamp_factor;
 }

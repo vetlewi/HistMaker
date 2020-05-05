@@ -16,5 +16,6 @@ extern bool StartXIA(int preset_time /*!< Preset time in seconds */, int num_mod
 extern bool StopXIA(int num_mod);
 extern bool WriteHistogram(int num_mod, const char *path);
 extern bool Exit(int num_mod);
+extern int *GetTS();
 
 #endif // XIA_INTERFACE_H

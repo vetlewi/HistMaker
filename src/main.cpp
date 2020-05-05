@@ -14,6 +14,7 @@
 
 #include "ConfigReader.h"
 #include "xia_interface.h"
+#include "ScalerTransmitter.h"
 
 #ifndef PRESET_MAX_MODULES
 #define PRESET_MAX_MODULES 24
@@ -82,11 +83,11 @@ int IndividualRun(int period, int num_mod, int run_no, const char *scaler_name)
 int Run(int period, int num_mod, int times, const char *scaler_name, const char *hist_path)
 {
     int now = 0;
-    // Setup progressbar
-    //indicators::DynamicProgress<indicators::BlockProgressBar> bars;
+
     std::function<bool(int)> end_condition = [&times](const int now) -> bool {
         return ( times == 0 ) ? true : now < times;
     };
+
     while ( end_condition(now) && !end_run ){
         auto ret = IndividualRun(period, num_mod, now, scaler_name);
         if ( ret != 0 )
@@ -109,6 +110,7 @@ int main(int argc, char *argv[])
     std::string firmware_file = "XIA_Firmware.txt";
     std::string config_file = "settings.set";
     std::string output_path = "/dev/null/";
+    std::string db_url = "";
     bool detach = false;
     unsigned short num_mod;
     std::array<unsigned short, PRESET_MAX_MODULES> plxMap{};
@@ -129,6 +131,7 @@ int main(int argc, char *argv[])
     app.add_option("-m,--modules", num_mod, "Number of modules in DAQ")->required();
     app.add_option("-o,--output", output_path, "Path where the histograms are dumped")->default_str("/dev/null");
     app.add_option("-t,--times", times, "Number of runs to do. If zero, will run forever");
+    app.add_option("-s,--scaler", db_url, "URL of scaler DB. [protocol]://[username:password@]host:port[?db=database]");
     app.add_flag("-d,--detach", detach, "Indicate if the program should be detached from the terminal session");
     //app.add_option("--plxmap", plxMap, "PLX slot mapping")->default_val(plxMap);
 
@@ -154,6 +157,9 @@ int main(int argc, char *argv[])
         return 10;
     }
 
+    ScalerTransmitter *transmitter;
+
+
     // First we will read the firmware mapping
     auto fmap = ReadConfigFile(firmware_file.c_str());
     if ( fmap.empty() ){
@@ -169,6 +175,16 @@ int main(int argc, char *argv[])
             return 16;
         }
         return 12;
+    }
+
+    // Setup scalers
+    if ( !db_url.empty() ){
+        try {
+            transmitter = new ScalerTransmitter(db_url.c_str(), GetTS());
+        } catch( const std::exception &e ){
+            spdlog::error(e.what());
+            std::cerr << "Unable to connect to influx database, error: " << e.what() << std::endl;
+        }
     }
 
     // Next we will ensure that all channels have the histogram bit set
