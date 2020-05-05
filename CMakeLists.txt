@@ -40,5 +40,5 @@ else()
     target_link_libraries(HistMaker PRIVATE
             plx:libplx xia::libpixie spdlog::spdlog indicators::indicators InfluxDB)
 endif()
-target_compile_features(HistMaker PRIVATE cxx_std_17)
-set_target_properties(HistMaker PROPERTIES CXX_STANDARD 17)
+target_compile_features(HistMaker PRIVATE cxx_std_14)
+#set_target_properties(HistMaker PROPERTIES CXX_STANDARD 14)
