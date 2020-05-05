@@ -48,6 +48,7 @@ void ScalerTransmitter::Start()
 
 void ScalerTransmitter::ProcessScalers(const scaler_t &scalers)
 {
+    auto now = std::chrono::system_clock::now();
     if ( pre_scalers.empty() ) {
         pre_scalers = scalers;
         return;
@@ -116,8 +117,6 @@ void ScalerTransmitter::ProcessScalers(const scaler_t &scalers)
             auto ICR = (liveTime != 0) ? fastPeak/liveTime : 0;
             auto OCR = (runTime != 0) ? ChanEvents/runTime : 0;
 
-            auto time = std::chrono::nanoseconds(runTimeN);
-
             char mod_str[16], chn_str[16];
             sprintf(mod_str, "%02d", module);
             sprintf(chn_str, "%02d", channel);
@@ -127,7 +126,7 @@ void ScalerTransmitter::ProcessScalers(const scaler_t &scalers)
             .addField("OCR", OCR)
             .addTag("module", mod_str)
             .addTag("channel", chn_str)
-            .setTimestamp(start_time + std::chrono::duration_cast<std::chrono::milliseconds>(time)));
+            .setTimestamp(now));
         }
         pre_scalers[module] = scalers[module];
     }
@@ -138,7 +137,7 @@ void ScalerTransmitter::ProcessScalers(const scaler_t &scalers)
         // Worst case we loose some scalers. However, it doesn't kill our
         // program since it is not critical, just sad :(
         spdlog::error("ScalerTransmitter: " + std::string(e.what()));
-        std::cerr << "Error transmitting scalers: " << e.what() << std::endl;
+        std::cout << "Error transmitting scalers: " << e.what() << std::endl;
     }
 
 
