@@ -7,6 +7,8 @@ find_path(PLX_INCLUDE_DIR
         /opt/plx/current/PlxSdk/Include)
 mark_as_advanced(PLX_INCLUDE_DIR)
 
+message(STATUS  "Found: " ${PLX_INCLUDE_DIR})
+
 # Look for library
 find_library(PLX_LIBRARY
     NAMES
