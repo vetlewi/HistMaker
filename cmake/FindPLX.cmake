@@ -12,10 +12,10 @@ message(STATUS  "Found: " ${PLX_INCLUDE_DIR})
 # Look for library
 find_library(PLX_LIBRARY
     NAMES
-        libPlxApi
-        PlxApi
+        PlxApi/Library/libPlxApi
+        PlxApi/Library/PlxApi
     PATHS
-        ${PLX_INCLUDE_DIR}/../PlxApi/Library)
+        /opt/plx/current/PlxSdk)
 mark_as_advanced(PLX_LIBRARY)
 
 set(PLX_VERSION_STRING "Unknown")
