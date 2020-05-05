@@ -8,6 +8,7 @@
 #include <spdlog/spdlog.h>
 
 #include <exception>
+#include <iostream>
 
 #define LIVETIMEA_ADDRESS 0x0004a37f
 #define LIVETIMEB_ADDRESS 0x0004a38f
@@ -22,7 +23,6 @@ static ScalerTransmitter *private_transmitter = nullptr;
 
 ScalerTransmitter::ScalerTransmitter(const char *url, const int *ts_factor)
     : db( influxdb::InfluxDBFactory::Get(url) )
-    , worker( [this](const std::stop_token &stop){ this->work(stop); } )
 {
 
     if ( private_transmitter != nullptr )
@@ -37,20 +37,6 @@ ScalerTransmitter::ScalerTransmitter(const char *url, const int *ts_factor)
 ScalerTransmitter::~ScalerTransmitter()
 {
     private_transmitter = nullptr;
-}
-
-void ScalerTransmitter::work(const std::stop_token &token)
-{
-    scaler_t scalers;
-    while ( !token.stop_requested() ){
-
-        while( input_queue.wait_dequeue_timed(scalers, std::chrono::seconds(1)) ){
-
-            ProcessScalers(scalers);
-
-        }
-
-    }
 }
 
 void ScalerTransmitter::ProcessScalers(const scaler_t &scalers)
@@ -138,15 +124,10 @@ void ScalerTransmitter::ProcessScalers(const scaler_t &scalers)
         // Worst case we loose some scalers. However, it doesn't kill our
         // program since it is not critical, just sad :(
         spdlog::error("ScalerTransmitter: " + std::string(e.what()));
+        std::cerr << "Error transmitting scalers: " << e.what() << std::endl;
     }
 
 
-}
-
-
-bool ScalerTransmitter::PushReadout(const scaler_t &scalers)
-{
-    return input_queue.enqueue(scalers);
 }
 
 void ScalerTransmitter::SetTS_Factor(const int *ts_factor)

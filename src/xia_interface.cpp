@@ -337,7 +337,7 @@ bool LogScalers(int num_mod, const char *file)
     }
 
     if ( ScalerTransmitter::Get() ){
-        ScalerTransmitter::Get()->PushReadout(scalers);
+        ScalerTransmitter::Get()->ProcessScalers(scalers);
     }
 
     // Get the current time
