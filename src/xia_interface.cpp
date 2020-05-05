@@ -6,11 +6,11 @@
 #include "ScalerTransmitter.h"
 
 //#include <xia/pixie16app_export.h>
-#if __linux__
-#include <app/pixie16app_export.h>
-#else
+//#if __linux__
+//#include <app/pixie16app_export.h>
+//#else
 #include <pixie16app_export.h>
-#endif // __linux__
+//#endif // __linux__
 
 #include <iostream>
 #include <chrono>
