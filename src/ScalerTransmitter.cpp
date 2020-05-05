@@ -43,7 +43,7 @@ ScalerTransmitter::~ScalerTransmitter()
 void ScalerTransmitter::Start()
 {
     start_time = std::chrono::system_clock::now();
-    std::fill(std::begin(pre_scalers), std::end(pre_scalers), 0);
+    pre_scalers.clear();
 }
 
 void ScalerTransmitter::ProcessScalers(const scaler_t &scalers)
