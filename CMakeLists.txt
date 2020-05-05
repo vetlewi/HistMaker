@@ -3,6 +3,9 @@ project(HistMaker)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindPLX.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindXIA.cmake)
+
 if ( APPLE )
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/xia)
 else()
