@@ -17,7 +17,7 @@ find_library(XIA_LIBRARY
         Pixie16App
         Pixie16Sys
     PATHS
-        ${XIA_INCLUDE_DIR})
+        /opt/xia/current)
 mark_as_advanced(XIA_LIBRARY)
 
 set(XIA_VERSION_STRING "Unknown")
