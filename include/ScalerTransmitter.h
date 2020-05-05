@@ -52,7 +52,7 @@ public:
     void SetTS_Factor(const int *ts_factor);
 
     //! Set start time
-    void Start(){ start_time = std::chrono::system_clock::now(); }
+    void Start();
 
     //! Process the scalers and fill buffer
     void ProcessScalers(const scaler_t &scalers);

@@ -9,6 +9,7 @@
 
 #include <exception>
 #include <iostream>
+#include <algorithm>
 
 #define LIVETIMEA_ADDRESS 0x0004a37f
 #define LIVETIMEB_ADDRESS 0x0004a38f
@@ -37,6 +38,12 @@ ScalerTransmitter::ScalerTransmitter(const char *url, const int *ts_factor)
 ScalerTransmitter::~ScalerTransmitter()
 {
     private_transmitter = nullptr;
+}
+
+void ScalerTransmitter::Start()
+{
+    start_time = std::chrono::system_clock::now();
+    std::fill(std::begin(pre_scalers), std::end(pre_scalers), 0);
 }
 
 void ScalerTransmitter::ProcessScalers(const scaler_t &scalers)
@@ -106,11 +113,14 @@ void ScalerTransmitter::ProcessScalers(const scaler_t &scalers)
             //ICR[i][j] = (liveTime !=0) ? fastPeak/liveTime : 0;
             //OCR[i][j] = (runTime != 0) ? ChanEvents/runTime : 0;
 
+            auto ICR = (liveTime != 0) ? fastPeak/liveTime : 0;
+            auto OCR = (runTime != 0) ? ChanEvents/runTime : 0;
+
             auto time = std::chrono::nanoseconds(runTimeN);
 
             db->write(influxdb::Point{"count_rate"}
-            .addField("ICR", (liveTime !=0) ? fastPeak/liveTime : 0)
-            .addField("OCR", (runTime != 0) ? ChanEvents/runTime : 0)
+            .addField("ICR", ICR)
+            .addField("OCR", OCR)
             .addTag("module", std::to_string(module))
             .addTag("channel", std::to_string(channel))
             .setTimestamp(start_time + std::chrono::duration_cast<std::chrono::milliseconds>(time)));
