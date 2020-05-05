@@ -2,9 +2,9 @@
 # Find the PLX headers
 find_path(PLX_INCLUDE_DIR
     NAMES
-        PlxApi.h
+        Include/PlxApi.h
     PATH
-        /opt/plx/current/PlxSdk/Include)
+        /opt/plx/current/PlxSdk)
 mark_as_advanced(PLX_INCLUDE_DIR)
 
 message(STATUS  "Found: " ${PLX_INCLUDE_DIR})
