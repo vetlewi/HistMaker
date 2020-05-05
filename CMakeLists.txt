@@ -74,6 +74,6 @@ if ( APPLE )
             OCLDAQ::plx OCLDAQ::xia spdlog::spdlog indicators::indicators InfluxDB)
 else()
     target_link_libraries(HistMaker PRIVATE
-            ${XIA_APP} ${XIA_SYS} ${PLX_LIB} spdlog::spdlog indicators::indicators InfluxDB ldl)
+            ${XIA_APP} ${XIA_SYS} ${PLX_LIB} spdlog::spdlog indicators::indicators InfluxDB dl)
 endif()
 target_compile_features(HistMaker PRIVATE cxx_std_17)
